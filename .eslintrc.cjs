@@ -1,35 +1,19 @@
-/* eslint-env node */
-require('@rushstack/eslint-patch/modern-module-resolution');
+import js from '@eslint/js'
+import pluginVue from 'eslint-plugin-vue'
+import skipFormatting from '@vue/eslint-config-prettier/skip-formatting'
 
-module.exports = {
-	root: true,
-	extends: [
-		'plugin:vue/vue3-essential',
-		'eslint:recommended',
-		'@vue/eslint-config-prettier',
-	],
-	env: {
-		'vue/setup-compiler-macros': true,
-	},
-	parserOptions: {
-		ecmaVersion: '2022',
-		sourceType: 'module',
-	},
-	rules: {
-		'no-console': process.env.NODE_ENV === 'production' ? 'error' : 'off',
-		'no-debugger': process.env.NODE_ENV === 'production' ? 'error' : 'off',
-		'prettier/prettier': [
-			'error',
-			{
-				singleQuote: true,
-				semi: true,
-				useTabs: true,
-				tabWidth: 2,
-				trailingComma: 'all',
-				printWidth: 80,
-				bracketSpacing: true,
-				arrowParens: 'avoid',
-			},
-		],
-	},
-};
+export default [
+  {
+    name: 'app/files-to-lint',
+    files: ['**/*.{js,mjs,jsx,vue}'],
+  },
+
+  {
+    name: 'app/files-to-ignore',
+    ignores: ['**/dist/**', '**/dist-ssr/**', '**/coverage/**'],
+  },
+
+  js.configs.recommended,
+  ...pluginVue.configs['flat/essential'],
+  skipFormatting,
+]
